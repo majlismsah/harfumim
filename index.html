@@ -10,9 +10,8 @@
 <body class="bg-slate-100 font-sans min-h-screen flex items-center justify-center p-4">
 
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
-        <!-- Header Banner Pilihan 1 (Elegan & Berjarak) -->
+        <!-- Header Banner -->
         <div class="bg-gradient-to-br from-emerald-700 to-emerald-800 p-6 text-center text-white relative overflow-hidden rounded-t-2xl">
-            <!-- Dekorasi aksen lingkaran transparan dibelakang teks -->
             <div class="absolute -top-10 -right-10 w-24 h-24 bg-white/5 rounded-full pointer-events-none"></div>
             <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white/5 rounded-full pointer-events-none"></div>
 
@@ -23,7 +22,6 @@
                 KAJIAN HARFU MIM CIBODAS
             </h1>
             
-            <!-- Info detail terpisah baris agar tidak padat -->
             <div class="mt-4 pt-3 border-t border-emerald-600/50 flex flex-col items-center justify-center gap-1.5 text-xs text-emerald-100/90 font-medium">
                 <div class="flex items-center gap-1.5">
                     <span>🗓️</span> 
@@ -38,8 +36,7 @@
 
         <!-- Form Pendaftaran -->
         <form id="formPendaftaran" class="p-6 space-y-5">
-            
-            <!-- Input Nama (Auto Kapital saat mengetik) -->
+            <!-- Input Nama -->
             <div>
                 <label for="nama" class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap Jamaah</label>
                 <input type="text" id="nama" name="nama" required placeholder="MASUKKAN NAMA LENGKAP" 
@@ -50,7 +47,7 @@
             <!-- Input Nomor WhatsApp -->
             <div>
                 <label for="nowa" class="block text-sm font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif</label>
-                <input type="tel" id="nowa" name="nowa" required placeholder="Contoh: 08123456789" 
+                <input type="tel" id="nowa" name="nowa" required placeholder="Contoh: 0816787977" 
                     class="w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
                 <p class="text-[11px] text-slate-500 mt-1">Pastikan nomor aktif untuk menerima QR Code absensi.</p>
             </div>
@@ -74,7 +71,6 @@
                         <option value="RJ">RJ</option>
                         <option value="Umum">Umum</option>
                     </select>
-                    <!-- Ikon panah kustom untuk dropdown -->
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                     </div>
@@ -94,52 +90,48 @@
     <!-- LOGIKA JAVASCRIPT -->
     <script>
         document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah reload halaman
+            e.preventDefault(); 
             
-            // Mengubah tombol menjadi mode loading
             const btn = document.getElementById('btnSubmit');
             btn.innerText = "Memproses Pendaftaran...";
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
 
-            // Mengambil data dari form
             const namaClean = document.getElementById('nama').value.trim();
             let nowaRaw = document.getElementById('nowa').value.trim();
             const majlis = document.getElementById('majlis').value;
 
-            // Logika Membersihkan Nomor WA ke Format Internasional (62)
+            // Format nomor ke internasional (62)
             let nowaClean = nowaRaw.replace(/[^0-9]/g, ''); 
-            
             if (nowaClean.startsWith('0')) {
                 nowaClean = '62' + nowaClean.slice(1);
             } else if (nowaClean.startsWith('8')) {
                 nowaClean = '62' + nowaClean;
             }
 
-            // Data yang akan dikirim ke Google Sheets
             const dataJamaah = {
                 nama: namaClean,
-                nowa: nowaClean, 
+                nowa: nowaClean,
                 majlis: majlis
             };
 
             // ====================================================================
-            // CONFIGURATION: URL UTAMA YANG SUDAH TERBUKTI BISA MASUK & NO ADMIN
+            // CONFIGURATION: SETUP URL APPS SCRIPT DAN NOMOR ADMIN UTAMA DI SINI
             // ====================================================================
             const urlAppsScript = "https://script.google.com/macros/s/AKfycbzXSe97soqb9BNC4Gi0qVZrNeEGLrxBrYgVO_TryeQcIoZxcuC6WKMnQ2dVBdVXV8yXjg/exec"; 
             const nomorAdmin = "62816787977"; 
 
-            // Kirim data ke Google Sheets secara background menggunakan fetch
+            // PROSESKIRIM DATA KE GOOGLE SHEETS
             fetch(urlAppsScript, {
                 method: 'POST',
-                mode: 'no-cors', // Wajib untuk bypass masalah CORS di Google Apps Script
+                mode: 'no-cors', // Bypass CORS policy Google
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(dataJamaah)
             })
             .then(() => {
-                // Begitu data sukses masuk Google Sheets, langsung alihkan ke chat WA Admin
+                // Berhasil masuk Sheets -> Redirect ke WhatsApp Admin
                 const isiPesan = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(dataJamaah.nama)}%0A• No WA: ${encodeURIComponent(dataJamaah.nowa)}%0A• Majlis: ${encodeURIComponent(dataJamaah.majlis)}%0A%0AMohon di-follow up untuk link QR Code absensi dan lokasi acaranya. Terima kasih.`;
 
                 window.location.href = `https://wa.me/${nomorAdmin}?text=${isiPesan}`;
@@ -148,7 +140,6 @@
                 console.error('Error:', error);
                 alert('Pendaftaran gagal disimpan ke database. Silakan coba kembali.');
                 
-                // Reset tombol jika pengiriman gagal total
                 btn.innerText = "DAFTAR KEHADIRAN SEKARANG";
                 btn.disabled = false;
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
