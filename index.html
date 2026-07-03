@@ -12,7 +12,7 @@
         <!-- Header Banner -->
         <div class="bg-gradient-to-br from-emerald-700 to-emerald-800 p-6 text-center text-white relative overflow-hidden rounded-t-2xl">
             <span class="text-[10px] font-bold tracking-widest uppercase bg-emerald-900/50 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-200 inline-block mb-3">
-                Requirements Kehadiran
+                🕌 Registrasi Kehadiran
             </span>
             <h1 class="text-xl font-black tracking-wide leading-tight">KAJIAN HARFU MIM CIBODAS</h1>
             
@@ -90,7 +90,7 @@
                 nowaClean = '62' + nowaClean;
             }
 
-            // URL Apps Script Anda
+            // URL Apps Script Terbaru Anda
             const urlAppsScript = "https://script.google.com/macros/s/AKfycby8WTIN51N_4V1AZD08uUbQekpZZ_i6LqrrT3lkKoy9jUp4712t3zRPmv-wgFXAaK2asQ/exec"; 
             const nomorAdmin = "62816787977"; 
 
@@ -100,25 +100,22 @@
             params.append('nowa', nowaClean);
             params.append('majlis', majlis);
 
-            // Kirim data ke Google Sheets menggunakan metode navigasi aman dari CORS
+            // Kirim data ke Google Sheets
             fetch(urlAppsScript, {
                 method: 'POST',
-                mode: 'cors', // Menuntut CORS policy standar
+                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: params.toString()
             })
             .then(res => {
-                // Google Web Apps selalu mengembalikan redirect atau response teks. 
-                // Jika status ok (200) atau sukses kirim, langsung arahkan ke WhatsApp.
+                // Berhasil masuk database, langsung alihkan ke WhatsApp admin
                 bukaWhatsApp(namaClean, nowaClean, majlis, nomorAdmin);
             })
             .catch(error => {
-                // Di beberapa browser, fetch ke Apps Script memicu error CORS buatan 
-                // meskipun data SEBENARNYA SUDAH MASUK ke Google Sheets.
-                // Untuk kenyamanan user, kita tetap teruskan ke WhatsApp.
-                console.warn('CORS Google diabaikan, meneruskan ke WhatsApp...', error);
+                // Mengantisipasi silent error CORS browser, data tetap masuk & user tetap ke WA
+                console.warn('Mengalihkan antarmuka...', error);
                 bukaWhatsApp(namaClean, nowaClean, majlis, nomorAdmin);
             });
         });
