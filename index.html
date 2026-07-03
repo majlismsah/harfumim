@@ -9,74 +9,59 @@
 <body class="bg-slate-100 font-sans min-h-screen flex items-center justify-center p-4">
 
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <!-- Header Banner -->
         <div class="bg-gradient-to-br from-emerald-700 to-emerald-800 p-6 text-center text-white relative overflow-hidden rounded-t-2xl">
-            <div class="absolute -top-10 -right-10 w-24 h-24 bg-white/5 rounded-full pointer-events-none"></div>
-            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white/5 rounded-full pointer-events-none"></div>
-
             <span class="text-[10px] font-bold tracking-widest uppercase bg-emerald-900/50 border border-emerald-500/30 px-3 py-1 rounded-full text-emerald-200 inline-block mb-3">
                 🕌 Registrasi Kehadiran
             </span>
-            <h1 class="text-xl font-black tracking-wide text-balance leading-tight drop-shadow-sm">
-                KAJIAN HARFU MIM CIBODAS
-            </h1>
+            <h1 class="text-xl font-black tracking-wide leading-tight">KAJIAN HARFU MIM CIBODAS</h1>
             
-            <div class="mt-4 pt-3 border-t border-emerald-600/50 flex flex-col items-center justify-center gap-1.5 text-xs text-emerald-100/90 font-medium">
-                <div class="flex items-center gap-1.5">
-                    <span>🗓️</span> 
-                    <span>Sabtu & Minggu, 4 - 5 Juli 2026</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span>📍</span> 
-                    <span class="font-bold text-white">Pondok Pemuda Cibodas</span>
-                </div>
+            <div class="mt-4 pt-3 border-t border-emerald-600/50 flex flex-col items-center justify-center gap-1 text-xs text-emerald-100">
+                <div>🗓️ Sabtu & Minggu, 4 - 5 Juli 2026</div>
+                <div>📍 <span class="font-bold text-white">Pondok Pemuda Cibodas</span></div>
             </div>
         </div>
 
+        <!-- Form Pendaftaran -->
         <form id="formPendaftaran" class="p-6 space-y-5">
+            <!-- Input Nama -->
             <div>
-                <label for="nama" class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap Jamaah</label>
-                <input type="text" id="nama" name="nama" required placeholder="MASUKKAN NAMA LENGKAP" 
+                <label class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap Jamaah</label>
+                <input type="text" id="nama" required placeholder="MASUKKAN NAMA LENGKAP" 
                     oninput="this.value = this.value.toUpperCase()"
-                    class="w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm placeholder:text-slate-400">
+                    class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
             </div>
 
+            <!-- Input WhatsApp -->
             <div>
-                <label for="nowa" class="block text-sm font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif</label>
-                <input type="tel" id="nowa" name="nowa" required placeholder="Contoh: 0816787977" 
-                    class="w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm">
-                <p class="text-[11px] text-slate-500 mt-1">Pastikan nomor aktif untuk menerima QR Code absensi.</p>
+                <label class="block text-sm font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif</label>
+                <input type="tel" id="nowa" required placeholder="Contoh: 08123456789" 
+                    class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
             </div>
 
+            <!-- Dropdown Majlis -->
             <div>
-                <label for="majlis" class="block text-sm font-bold text-slate-700 mb-1">Pilih Majlis</label>
-                <div class="relative">
-                    <select id="majlis" name="majlis" required 
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm appearance-none cursor-pointer">
-                        <option value="" disabled selected>-- Silakan Pilih Majlis Anda --</option>
-                        <option value="Ar-Rohman">Ar-Rohman</option>
-                        <option value="Ar-Rohim">Ar-Rohim</option>
-                        <option value="Al-Malik">Al-Malik</option>
-                        <option value="Al-Quddus">Al-Quddus</option>
-                        <option value="Nurul Hikmah">Nurul Hikmah</option>
-                        <option value="Nurul Hakim">Nurul Hakim</option>
-                        <option value="Nurul Salikin">Nurul Salikin</option>
-                        <option value="Nurul Kamilah">Nurul Kamilah</option>
-                        <option value="Kuningan">Kuningan</option>
-                        <option value="RJ">RJ</option>
-                        <option value="Umum">Umum</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                </div>
+                <label class="block text-sm font-bold text-slate-700 mb-1">Pilih Majlis</label>
+                <select id="majlis" required class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    <option value="" disabled selected>-- Silakan Pilih Majlis Anda --</option>
+                    <option value="Ar-Rohman">Ar-Rohman</option>
+                    <option value="Ar-Rohim">Ar-Rohim</option>
+                    <option value="Al-Malik">Al-Malik</option>
+                    <option value="Al-Quddus">Al-Quddus</option>
+                    <option value="Nurul Hikmah">Nurul Hikmah</option>
+                    <option value="Nurul Hakim">Nurul Hakim</option>
+                    <option value="Nurul Salikin">Nurul Salikin</option>
+                    <option value="Nurul Kamilah">Nurul Kamilah</option>
+                    <option value="Kuningan">Kuningan</option>
+                    <option value="RJ">RJ</option>
+                    <option value="Umum">Umum</option>
+                </select>
             </div>
 
-            <button type="submit" id="btnSubmit" 
-                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-150 ease-in-out hover:shadow-lg active:scale-[0.98] text-sm tracking-wide">
+            <!-- Tombol Submit -->
+            <button type="submit" id="btnSubmit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-md text-sm">
                 DAFTAR KEHADIRAN SEKARANG
             </button>
-
-            <p class="text-[11px] text-center text-slate-400 mt-4">Sistem Absensi Digital • Kajian Harfu Mim © 2026</p>
         </form>
     </div>
 
@@ -87,12 +72,12 @@
             const btn = document.getElementById('btnSubmit');
             btn.innerText = "Memproses Pendaftaran...";
             btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
 
             const namaClean = document.getElementById('nama').value.trim();
             let nowaRaw = document.getElementById('nowa').value.trim();
             const majlis = document.getElementById('majlis').value;
 
+            // Merapikan nomor WA ke format internasional 62
             let nowaClean = nowaRaw.replace(/[^0-9]/g, ''); 
             if (nowaClean.startsWith('0')) {
                 nowaClean = '62' + nowaClean.slice(1);
@@ -101,35 +86,32 @@
             }
 
             // ====================================================================
-            // ⚠️ TEMPEL URL APPS SCRIPT BARU KAMU DI BAWAH INI
+            // GANTI DENGAN URL WEB APP BARU KAMU DI BAWAH INI
             // ====================================================================
-            const urlAppsScript = "https://script.google.com/macros/s/AKfycbyj1KvfZzmsSmpzTH1hTw_hFko5_XjmIoSQ9QKlLaiuS7YKRi1-rwUYcMeK6HtKX1gjKw/exec"; 
+            const urlAppsScript = "https://script.google.com/macros/s/AKfycbyFJn7hbpCA0FgEZ9Aogtvt5U2cO-C8aJBlL2wedNvPl7NW47Lnx64Gbqaz1VyKguxttA/exec"; 
             const nomorAdmin = "62816787977"; 
 
-            // Mengubah format pengiriman data dari JSON menjadi URL-encoded Form Data (Metode paling aman untuk Apps Script)
-            const formPostData = new URLSearchParams();
-            formPostData.append('nama', namaClean);
-            formPostData.append('nowa', nowaClean);
-            formPostData.append('majlis', majlis);
+            // Format data standar formulir (paling stabil)
+            const formData = new URLSearchParams();
+            formData.append('nama', namaClean);
+            formData.append('nowa', nowaClean);
+            formData.append('majlis', majlis);
 
-            // Tembak langsung tanpa menggunakan 'no-cors' agar data wajib diterima penuh oleh Google
+            const pesanWA = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(namaClean)}%0A• No WA: ${encodeURIComponent(nowaClean)}%0A• Majlis: ${encodeURIComponent(majlis)}%0A%0AMohon di-follow up. Terima kasih.`;
+
+            // Kirim data ke Google Sheets
             fetch(urlAppsScript, {
                 method: 'POST',
-                body: formPostData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
+                body: formData,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
-            .then(res => res.json())
-            .then(response => {
-                // Alihkan ke WA Admin setelah sukses masuk database
-                const isiPesan = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(namaClean)}%0A• No WA: ${encodeURIComponent(nowaClean)}%0A• Majlis: ${encodeURIComponent(majlis)}%0A%0AMohon di-follow up untuk link QR Code absensi dan lokasi acaranya. Terima kasih.`;
-                window.location.href = `https://wa.me/${nomorAdmin}?text=${isiPesan}`;
+            .then(() => {
+                // Berhasil -> Langsung lempar ke WhatsApp Admin
+                window.location.href = `https://wa.me/${nomorAdmin}?text=${pesanWA}`;
             })
-            .catch(error => {
-                // Jika terjadi galat/error karena redirect Google Apps Script, data sebenarnya SUDAH masuk, maka tetap kita alihkan ke WA agar pendaftar tidak bingung
-                const isiPesan = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(namaClean)}%0A• No WA: ${encodeURIComponent(nowaClean)}%0A• Majlis: ${encodeURIComponent(majlis)}%0A%0AMohon di-follow up untuk link QR Code absensi dan lokasi acaranya. Terima kasih.`;
-                window.location.href = `https://wa.me/${nomorAdmin}?text=${isiPesan}`;
+            .catch(() => {
+                // Proteksi jika diblokir CORS browser, data tetap masuk, langsung lempar ke WA
+                window.location.href = `https://wa.me/${nomorAdmin}?text=${pesanWA}`;
             });
         });
     </script>
