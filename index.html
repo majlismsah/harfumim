@@ -65,53 +65,67 @@
         </form>
     </div>
 
+    <!-- LOGIKA JAVASCRIPT -->
     <script>
         document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
-            e.preventDefault(); 
+            e.preventDefault(); // Mencegah reload halaman
             
+            // Mengubah tombol menjadi mode loading
             const btn = document.getElementById('btnSubmit');
             btn.innerText = "Memproses Pendaftaran...";
             btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
 
+            // Mengambil data dari form (Nama otomatis kapital dari oninput)
             const namaClean = document.getElementById('nama').value.trim();
             let nowaRaw = document.getElementById('nowa').value.trim();
             const majlis = document.getElementById('majlis').value;
 
-            // Merapikan nomor WA ke format internasional 62
+            // Logika Membersihkan Nomor WA ke Format Internasional (62)
             let nowaClean = nowaRaw.replace(/[^0-9]/g, ''); 
+            
             if (nowaClean.startsWith('0')) {
                 nowaClean = '62' + nowaClean.slice(1);
             } else if (nowaClean.startsWith('8')) {
                 nowaClean = '62' + nowaClean;
             }
 
+            // Data siap pakai untuk dikirim
+            const dataJamaah = {
+                nama: namaClean,
+                nowa: nowaClean, 
+                majlis: majlis
+            };
+
             // ====================================================================
-            // GANTI DENGAN URL WEB APP BARU KAMU DI BAWAH INI
+            // 📝 TEMPEL URL APPS SCRIPT DAN NOMOR ADMIN DI SINI
             // ====================================================================
             const urlAppsScript = "https://script.google.com/macros/s/AKfycbyFJn7hbpCA0FgEZ9Aogtvt5U2cO-C8aJBlL2wedNvPl7NW47Lnx64Gbqaz1VyKguxttA/exec"; 
             const nomorAdmin = "62816787977"; 
 
-            // Format data standar formulir (paling stabil)
-            const formData = new URLSearchParams();
-            formData.append('nama', namaClean);
-            formData.append('nowa', nowaClean);
-            formData.append('majlis', majlis);
-
-            const pesanWA = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(namaClean)}%0A• No WA: ${encodeURIComponent(nowaClean)}%0A• Majlis: ${encodeURIComponent(majlis)}%0A%0AMohon di-follow up. Terima kasih.`;
-
-            // Kirim data ke Google Sheets
+            // Kirim data ke Google Sheets via Web App Apps Script
             fetch(urlAppsScript, {
                 method: 'POST',
-                body: formData,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                mode: 'no-cors', // Penting untuk bypass CORS di Google Apps Script
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataJamaah)
             })
             .then(() => {
-                // Berhasil -> Langsung lempar ke WhatsApp Admin
-                window.location.href = `https://wa.me/${nomorAdmin}?text=${pesanWA}`;
+                // Setelah data sukses dikirim ke Sheets, langsung lempar jamaah ke WA Admin
+                const isiPesan = `Assalamu'alaikum Admin,%0A%0Asaya sudah mengisi data pendaftaran KAJIAN HARFU MIM CIBODAS.%0A%0A*Data Pendaftaran:*%0A• Nama: ${encodeURIComponent(dataJamaah.nama)}%0A• No WA: ${encodeURIComponent(dataJamaah.nowa)}%0A• Majlis: ${encodeURIComponent(dataJamaah.majlis)}%0A%0AMohon di-follow up untuk link QR Code absensi dan lokasi acaranya. Terima kasih.`;
+
+                window.location.href = `https://wa.me/${nomorAdmin}?text=${isiPesan}`;
             })
-            .catch(() => {
-                // Proteksi jika diblokir CORS browser, data tetap masuk, langsung lempar ke WA
-                window.location.href = `https://wa.me/${nomorAdmin}?text=${pesanWA}`;
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Pendaftaran gagal terkirim ke database, silakan coba lagi.');
+                
+                // Kembalikan tombol jika error
+                btn.innerText = "DAFTAR KEHADIRAN SEKARANG";
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
             });
         });
     </script>
